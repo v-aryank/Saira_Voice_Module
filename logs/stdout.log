@@ -1,0 +1,377 @@
+[SYRA] Initializing...
+[SYRA] Audio system detected: PulseAudio (on PipeWire 1.0.5)
+[SYRA] Microphone: pulse (index 7, 16000 Hz)
+[SYRA] Microphone ready.
+[WARN] Ambient level is abnormally high (about 7367; a quiet room is 20-100). Keeping threshold 300. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Hello Sir. Welcome back. SYRA is here to assist you.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2258; a quiet room is 20-100). Keeping threshold 3000. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[SYRA] Could not understand.
+[YOU] open vs
+[SYRA] I couldn't find an application called vs.
+[YOU] open vs
+[SYRA] I couldn't find an application called vs.
+[YOU] vs code
+[SYRA] Sorry, I don't know that command yet.
+[YOU] open vs
+[SYRA] I couldn't find an application called vs.
+[YOU] open visual
+[SYRA] Opening Visual Studio Code.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2079; a quiet room is 20-100). Keeping threshold 3000. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Terminal closed.
+[WARN] Ambient level is abnormally high (about 2158; a quiet room is 20-100). Keeping threshold 3000. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2014; a quiet room is 20-100). Keeping threshold 3000. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[SYRA] Could not understand.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Recognition service unavailable.
+[SYRA] Recognition service unavailable.
+[SYRA] Recognition service unavailable.
+[SYRA] Recognition service unavailable.
+[SYRA] Recognition service unavailable.
+[SYRA] Recognition service unavailable.
+[SYRA] Recognition service is back.
+[SYRA] Shutting down.
+[SYRA] Initializing...
+[SYRA] Audio system detected: PulseAudio (on PipeWire 1.0.5)
+[SYRA] Microphone: pulse (index 7, 16000 Hz)
+[SYRA] Microphone ready.
+[WARN] Ambient level is abnormally high (about 5662; a quiet room is 20-100). Keeping threshold 300. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Hello Sir.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2188; a quiet room is 20-100). Keeping threshold 3000. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[YOU] open vs code
+[SYRA] Opening Visual Studio Code.
+[YOU] open LinkedIn
+[SYRA] Opening LinkedIn.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[YOU] quite
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2100; a quiet room is 20-100). Keeping threshold 3000. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[YOU] hu r u
+[SYRA] Sorry, I don't know that command yet.
+[YOU] who are you
+[SYRA] I am SYRA, your desktop voice assistant.
+[YOU] what is the date today
+[SYRA] Today is Sunday, September 20, 2026.
+[YOU] can you say the weather
+[SYRA] Sorry, I don't know that command yet.
+[YOU] ok quite
+[SYRA] Sorry, I don't know that command yet.
+[YOU] quite
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] who are you
+[SYRA] I am SYRA, your desktop voice assistant.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[SYRA] I'm having trouble understanding. You can also type your command.
+[YOU] quite
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Shutting down.
+[SYRA] Initializing...
+[SYRA] Audio system detected: PulseAudio (on PipeWire 1.0.5)
+[SYRA] Microphone: pulse (index 7, 16000 Hz)
+[SYRA] Microphone ready.
+[WARN] Ambient level is abnormally high (about 6492; a quiet room is 20-100). Keeping threshold 300. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Hello Sir.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] shutdown
+[SYRA] Sorry, I don't know that.
+[YOU] shutdown Shera
+[SYRA] Sorry, I don't know that.
+[YOU] shutdown
+[SYRA] Sorry, I don't know that.
+[YOU] shutdown Si
+[SYRA] Sorry, I don't know that.
+[YOU] shutdown Sira
+[SYRA] Sorry, I don't know that.
+[YOU] shutdown
+[SYRA] Sorry, I don't know that.
+[SYRA] Could not understand.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2102; a quiet room is 20-100). Keeping threshold 2782. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[YOU] create a
+[SYRA] Sorry, I don't know that.
+[YOU] web page
+[SYRA] Sorry, I don't know that.
+[YOU] make a
+[SYRA] Sorry, I don't know that.
+[SYRA] Terminal closed.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] meko
+[SYRA] Sorry, I don't know that.
+[YOU] make a
+[SYRA] Sorry, I don't know that.
+[YOU] make a web
+[SYRA] Sorry, I don't know that.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Shutting down.
+[SYRA] Initializing...
+[SYRA] Audio system detected: PulseAudio (on PipeWire 1.0.5)
+[SYRA] Microphone: pulse (index 7, 16000 Hz)
+[SYRA] Microphone ready.
+[WARN] Ambient level is abnormally high (about 5947; a quiet room is 20-100). Keeping threshold 300. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Hello Sir.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] how r u
+[SYRA] Sorry, I don't know that.
+[YOU] who are you
+[SYRA] I am SAIRA, your desktop voice assistant.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[SYRA] Could not understand.
+[SYRA] Terminal closed.
+[SYRA] Could not understand.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] open calculator
+[SYRA] Opening Calculator.
+[YOU] kya kar
+[SYRA] Sorry, I don't know that.
+[YOU] close calculator
+[SYRA] Sorry, I don't know that.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2682; a quiet room is 20-100). Keeping threshold 2454. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[YOU] terminal
+[SYRA] Sorry, I don't know that.
+[YOU] open terminal
+[SYRA] Opening Terminal.
+[SYRA] Could not understand.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Shutting down.
+[SYRA] Initializing...
+[SYRA] Audio system detected: PulseAudio (on PipeWire 1.0.5)
+[SYRA] Microphone: pulse (index 7, 16000 Hz)
+[SYRA] Microphone ready.
+[WARN] Ambient level is abnormally high (about 8166; a quiet room is 20-100). Keeping threshold 300. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Hello Sir.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] open code
+[SYRA] Opening Visual Studio Code.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[SYRA] I'm having trouble understanding. You can also type your command.
+[SYRA] Could not understand.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] open Chrome
+[SYRA] Opening Chrome.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[YOU] chat
+[SYRA] Sorry, I don't know that.
+[YOU] GitHub
+[SYRA] Sorry, I don't know that.
+[YOU] open GitHub
+[SYRA] Opening GitHub.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[YOU] close gith
+[SYRA] I don't have a close command for gith.
+[YOU] close GitHub
+[SYRA] I don't have a close command for github.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] make a new
+[SYRA] Sorry, I don't know that.
+[YOU] make a
+[SYRA] Sorry, I don't know that.
+[YOU] make a new
+[SYRA] Sorry, I don't know that.
+[YOU] make new
+[SYRA] Sorry, I don't know that.
+[YOU] make new
+[SYRA] Sorry, I don't know that.
+[YOU] make a new
+[SYRA] Sorry, I don't know that.
+[YOU] new project
+[SYRA] Sorry, I don't know that.
+[YOU] make new project
+[SYRA] What should I name the project?
+[SYRA] Listening...
+[YOU] forget
+[SYRA] New project folder: /home/v-aryan-kabir/Documents/vscode/Project/forget
+[SYRA] Project forget is created, but your new project template is missing or empty.
+[SYRA] Could not understand.
+[YOU] open vs code
+[SYRA] Opening Visual Studio Code.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2007; a quiet room is 20-100). Keeping threshold 2616. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[YOU] make a web
+[SYRA] Sorry, I don't know that.
+[YOU] make
+[SYRA] Sorry, I don't know that.
+[YOU] make web page
+[SYRA] Sorry, I don't know that.
+[YOU] make web page
+[SYRA] Sorry, I don't know that.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[SYRA] I'm having trouble understanding. You can also type your command.
+[YOU] make new project
+[SYRA] What should I name the project?
+[SYRA] Listening...
+[YOU] never mind
+[SYRA] I didn't hear a project name, so I cancelled.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Shutting down.
+[SYRA] Initializing...
+[SYRA] Audio system detected: PulseAudio (on PipeWire 1.0.5)
+[SYRA] Microphone: pulse (index 7, 16000 Hz)
+[SYRA] Microphone ready.
+[WARN] Ambient level is abnormally high (about 6563; a quiet room is 20-100). Keeping threshold 300. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Hello Sir.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] open code
+[SYRA] Opening Visual Studio Code.
+[SYRA] Could not understand.
+[YOU] open Chrome
+[SYRA] Opening Chrome.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[SYRA] Could not understand.
+[SYRA] I'm having trouble understanding. You can also type your command.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] restart
+[SYRA] Are you sure you want to restart the system?
+[YOU] cancel
+[SYRA] Restart cancelled.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2860; a quiet room is 20-100). Keeping threshold 3000. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[SYRA] Could not understand.
+[YOU] shutdown
+[SYRA] Shutting down the system.
+[SYRA] Terminal closed.
+Expression 'alsa_snd_pcm_prepare( stream->capture.pcm )' failed in 'src/hostapi/alsa/pa_linux_alsa.c', line: 2932
+Expression 'AlsaStart( stream, 0 )' failed in 'src/hostapi/alsa/pa_linux_alsa.c', line: 3246
+Expression 'AlsaRestart( self )' failed in 'src/hostapi/alsa/pa_linux_alsa.c', line: 3313
+Expression 'PaAlsaStream_HandleXrun( stream )' failed in 'src/hostapi/alsa/pa_linux_alsa.c', line: 4531
+[SYRA] Shutting down.
+[SYRA] Initializing...
+[SYRA] Audio system detected: PulseAudio (on PipeWire 1.0.5)
+[SYRA] Microphone: pulse (index 7, 16000 Hz)
+[SYRA] Microphone ready.
+[WARN] Ambient level is abnormally high (about 7431; a quiet room is 20-100). Keeping threshold 300. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Hello Sir.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[SYRA] Listening...
+[YOU] shutdown
+[SYRA] Are you sure you want to shut down the system?
+[YOU] cancel
+[SYRA] Shutdown cancelled.
+[SYRA] Could not understand.
+[YOU] sleep
+[SYRA] Going to sleep.
+[SYRA] Waiting for wake word...
+[SYRA] Wake word detected.
+[SYRA] Yes Sir.
+[WARN] Ambient level is abnormally high (about 2094; a quiet room is 20-100). Keeping threshold 3000. Check input volume/port, then run: python main.py --test-mic
+[SYRA] Listening...
+[SYRA] Could not understand.
+[YOU] turn off
+[SYRA] Turning off. Goodbye.
+[SYRA] Shutting down.

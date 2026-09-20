@@ -1,0 +1,6 @@
+SpeechRecognition>=3.10.4
+PyAudio>=0.2.14
+gTTS>=2.5.0
+wikipedia>=1.4.0
+requests>=2.31
+beautifulsoup4>=4.12
