@@ -1,7 +1,7 @@
 """Web shortcuts: "open YouTube" -> the URL opens in the system default browser.
 
 We use the standard URL-opening mechanism (`webbrowser` -> xdg-open), so no
-extra browser process is started by SYRA and the user's default browser and
+extra browser process is started by SAIRA and the user's default browser and
 profile are respected. Add sites in config.WEB_SITES.
 """
 from __future__ import annotations

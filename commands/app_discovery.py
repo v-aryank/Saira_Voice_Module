@@ -3,7 +3,7 @@
 Reads the standard application directories (system, user, Snap, Flatpak),
 builds an in-memory index once, and matches a spoken name against application
 names, generic names and keywords. Launching goes through `gio launch`, which
-understands Exec field codes, Snap/Flatpak and DBus activation - so SYRA does
+understands Exec field codes, Snap/Flatpak and DBus activation - so SAIRA does
 not have to parse or trust Exec lines itself.
 """
 from __future__ import annotations

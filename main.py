@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""SYRA v2.0 - desktop voice assistant.
+"""Saira Voice Control Engine - private desktop voice-control prototype.
 
     python main.py                 run the assistant
     python main.py --list-mics     show input devices and the auto-selection order
@@ -22,11 +22,11 @@ from audio.audio_env import silence_backend_noise      # noqa: E402
 
 silence_backend_noise()      # must run before PortAudio is initialised
 
-from utils.logger import SyraLogger                    # noqa: E402
+from utils.logger import SairaLogger                    # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="SYRA v2.0 desktop voice assistant")
+    parser = argparse.ArgumentParser(description="Saira Voice Control Engine")
     parser.add_argument("--list-mics", action="store_true", help="list input devices and exit")
     parser.add_argument("--test-mic", action="store_true", help="test the microphone and exit")
     parser.add_argument("--mic", help="microphone index or name (overrides config.MIC_DEVICE_INDEX)")
@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    mic_choice = args.mic or os.environ.get("SYRA_MIC")
+    mic_choice = args.mic or os.environ.get("SAIRA_MIC")
     if mic_choice:
         cfg.MIC_DEVICE_INDEX = int(mic_choice) if mic_choice.isdigit() else mic_choice
     if args.no_popup:
@@ -46,7 +46,7 @@ def main() -> int:
     if args.mute:
         cfg.TTS_ENABLED = False
 
-    log = SyraLogger(debug=args.debug or cfg.DEBUG, log_file=cfg.LOG_FILE)
+    log = SairaLogger(debug=args.debug or cfg.DEBUG, log_file=cfg.LOG_FILE)
 
     if args.list_mics or args.test_mic:
         from audio.diagnostics import list_microphones, test_microphone

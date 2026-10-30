@@ -13,7 +13,7 @@ _NON_WORD = re.compile(r"[^a-z0-9\s]")
 _SPACES = re.compile(r"\s+")
 
 _LEADING_FILLER = re.compile(
-    r"^(?:hey syra|ok syra|okay syra|syra|please|can you|could you|would you|will you|"
+    r"^(?:hey saira|ok saira|okay saira|saira|please|can you|could you|would you|will you|"
     r"i want you to|i want to|i would like to|i need you to)\s+"
 )
 _TRAILING_FILLER = re.compile(r"\s+(?:please|for me|now|thanks|thank you)$")
@@ -27,7 +27,7 @@ def normalize(text: str) -> str:
 
 
 def strip_command_fillers(text: str) -> str:
-    """Normalise and remove politeness/addressing words: "Syra, could you open Chrome please" -> "open chrome"."""
+    """Normalise and remove politeness/addressing words: "Saira, could you open Chrome please" -> "open chrome"."""
     text = normalize(text)
     previous = None
     while previous != text:
@@ -44,7 +44,7 @@ def slugify(text: str, separator: str = "-") -> str:
 
 # ── processes ────────────────────────────────────────────────────
 def clean_subprocess_env() -> dict[str, str]:
-    """Environment for launching desktop apps from inside SYRA's virtualenv.
+    """Environment for launching desktop apps from inside SAIRA's virtualenv.
 
     Without this, apps inherit VIRTUAL_ENV / the venv's bin on PATH, which can
     break Python-based desktop tools that expect the system interpreter.
@@ -62,7 +62,7 @@ def clean_subprocess_env() -> dict[str, str]:
 
 
 def launch_detached(argv: list[str], settle_seconds: float = 0.5) -> tuple[bool, str]:
-    """Start a GUI program fully detached from SYRA.
+    """Start a GUI program fully detached from SAIRA.
 
     Returns (ok, detail). A program that is still running after `settle_seconds`
     is considered launched; one that already exited with 0 (a launcher handing

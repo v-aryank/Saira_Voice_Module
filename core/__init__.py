@@ -1,1 +1,1 @@
-"""SYRA core: assistant loop, state machine, command routing."""
+"""SAIRA core: assistant loop, state machine, command routing."""

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""SYRA popup console (client side). Standard library only.
+"""SAIRA popup console (client side). Standard library only.
 
-Shows SYRA's conversation live and lets you type commands. Closing this window
-(or pressing Ctrl+D / Ctrl+C) puts SYRA back to sleep.
+Shows SAIRA's conversation live and lets you type commands. Closing this window
+(or pressing Ctrl+D / Ctrl+C) puts SAIRA back to sleep.
 """
 from __future__ import annotations
 
@@ -20,8 +20,8 @@ except ImportError:
     readline = None  # type: ignore[assignment]
 
 RESET = "\033[0m"
-COLORS = {"syra": "\033[96m", "you": "\033[92m", "warn": "\033[93m", "error": "\033[91m"}
-TAGS = {"syra": "[SYRA]", "you": "[YOU]", "warn": "[WARN]", "error": "[ERROR]"}
+COLORS = {"saira": "\033[96m", "you": "\033[92m", "warn": "\033[93m", "error": "\033[91m"}
+TAGS = {"saira": "[SAIRA]", "you": "[YOU]", "warn": "[WARN]", "error": "[ERROR]"}
 PROMPT = "[YOU] > "
 
 _out_lock = threading.Lock()
@@ -29,7 +29,7 @@ _out_lock = threading.Lock()
 
 def emit(kind: str, text: str) -> None:
     """Print a line above the input prompt without destroying what the user is typing."""
-    tag = TAGS.get(kind, "[SYRA]")
+    tag = TAGS.get(kind, "[SAIRA]")
     color = COLORS.get(kind, "")
     typed = readline.get_line_buffer() if readline else ""
     with _out_lock:
@@ -46,7 +46,7 @@ def receive_loop(conn: socket.socket) -> None:
                 except json.JSONDecodeError:
                     continue
                 if message.get("type") == "line":
-                    emit(str(message.get("kind", "syra")), str(message.get("text", "")))
+                    emit(str(message.get("kind", "saira")), str(message.get("text", "")))
                 elif message.get("type") == "quit":
                     break
     except OSError:
@@ -69,20 +69,20 @@ def connect(path: str) -> socket.socket:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="SYRA popup console")
+    parser = argparse.ArgumentParser(description="SAIRA popup console")
     parser.add_argument("--socket", required=True)
-    parser.add_argument("--title", default="SYRA")
+    parser.add_argument("--title", default="SAIRA")
     args = parser.parse_args()
 
     sys.stdout.write(f"\033]0;{args.title}\007")
     try:
         conn = connect(args.socket)
     except OSError as exc:
-        print(f"Could not reach SYRA ({exc}). Is the assistant running?")
+        print(f"Could not reach SAIRA ({exc}). Is the assistant running?")
         time.sleep(4)
         return 1
 
-    print("SYRA console - type a command, or just speak. Ctrl+D closes this window and puts SYRA to sleep.\n")
+    print("Saira console - type a command, or just speak. Ctrl+D closes this window and puts Saira to sleep.\n")
     threading.Thread(target=receive_loop, args=(conn,), daemon=True).start()
 
     while True:

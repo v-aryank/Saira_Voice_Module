@@ -1,6 +1,6 @@
-"""Terminal logger for SYRA.
+"""Terminal logger for SAIRA.
 
-Terminal output stays clean and human-readable ([SYRA] / [YOU] / [WARN] ...),
+Terminal output stays clean and human-readable ([SAIRA] / [YOU] / [WARN] ...),
 while a rotating file log keeps full detail (including tracebacks) for diagnosis.
 Output can also be mirrored to "sinks" - the popup console registers as one.
 """
@@ -16,15 +16,15 @@ from typing import Callable, Optional
 Sink = Callable[[str, str], None]   # (kind, message)
 
 _RESET = "\033[0m"
-_COLORS = {"syra": "\033[96m", "you": "\033[92m", "warn": "\033[93m",
+_COLORS = {"saira": "\033[96m", "you": "\033[92m", "warn": "\033[93m",
            "error": "\033[91m", "debug": "\033[90m"}
-_TAGS = {"syra": "[SYRA]", "you": "[YOU]", "warn": "[WARN]",
+_TAGS = {"saira": "[SAIRA]", "you": "[YOU]", "warn": "[WARN]",
          "error": "[ERROR]", "debug": "[DEBUG]"}
-_LEVELS = {"syra": logging.INFO, "you": logging.INFO, "warn": logging.WARNING,
+_LEVELS = {"saira": logging.INFO, "you": logging.INFO, "warn": logging.WARNING,
            "error": logging.ERROR, "debug": logging.DEBUG}
 
 
-class SyraLogger:
+class SairaLogger:
     """Thread-safe logger with a terminal view, a file log and optional sinks."""
 
     def __init__(self, debug: bool = False, log_file: Optional[Path] = None) -> None:
@@ -36,7 +36,7 @@ class SyraLogger:
 
     @staticmethod
     def _build_file_logger(path: Optional[Path]) -> logging.Logger:
-        logger = logging.getLogger("syra")
+        logger = logging.getLogger("saira")
         logger.setLevel(logging.DEBUG)
         logger.propagate = False
         if logger.handlers:
@@ -57,8 +57,8 @@ class SyraLogger:
         self._sinks.append(sink)
 
     # ── public API ───────────────────────────────────────────────
-    def syra(self, message: str) -> None:
-        self._emit("syra", message)
+    def saira(self, message: str) -> None:
+        self._emit("saira", message)
 
     def you(self, message: str, broadcast: bool = True) -> None:
         """What the user said/typed. Typed text is not re-broadcast: the popup already shows it."""

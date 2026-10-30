@@ -1,1 +1,1 @@
-"""SYRA audio: microphone, speaker, backend helpers."""
+"""Saira audio: microphone, speaker, and backend helpers."""

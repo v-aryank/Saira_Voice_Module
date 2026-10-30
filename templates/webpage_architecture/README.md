@@ -1,6 +1,6 @@
 # Webpage Architecture Demo
 
-Reusable vanilla HTML/CSS/JavaScript starter template for SYRA.
+Reusable vanilla HTML/CSS/JavaScript starter template for SAIRA.
 
 ## Structure
 
@@ -11,7 +11,7 @@ project-name/
 ├── assets/images/
 └── README.md
 
-## SYRA workflow
+## SAIRA workflow
 
 When the user says **Create a webpage architecture**:
 1. Ask for project name.

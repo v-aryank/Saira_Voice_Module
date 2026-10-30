@@ -57,19 +57,28 @@ def suppress_c_stderr() -> Iterator[None]:
         sys.stderr.flush()
     except (OSError, ValueError, AttributeError):
         pass
+    saved: int | None = None
+    devnull: int | None = None
     try:
         saved = os.dup(2)
         devnull = os.open(os.devnull, os.O_WRONLY)
     except OSError:
+        if saved is not None:
+            os.close(saved)
         yield
         return
+    assert saved is not None and devnull is not None
     try:
         os.dup2(devnull, 2)
         yield
     finally:
-        os.dup2(saved, 2)
-        os.close(saved)
-        os.close(devnull)
+        try:
+            os.dup2(saved, 2)
+        finally:
+            try:
+                os.close(saved)
+            finally:
+                os.close(devnull)
 
 
 @dataclass(frozen=True)

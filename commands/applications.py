@@ -49,7 +49,7 @@ from commands import web
 from commands.app_discovery import DesktopAppIndex
 from core.command_router import CommandContext, CommandRouter, Reply
 from utils.helpers import launch_detached, normalize
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 from pathlib import Path
 
 # ═══════════════════════════════════════════════════════════════
@@ -203,7 +203,7 @@ class CloseEntry:
 
 class CloseRegistry:
     """
-    Registry of applications SYRA is allowed to close.
+    Registry of applications SAIRA is allowed to close.
 
     This is deliberately separate from arbitrary shell execution.
     """
@@ -340,7 +340,7 @@ WEB_TAB_TARGETS: dict[str, dict] = {
 
 class WebTabRegistry:
     """
-    Registry for websites that SYRA can close
+    Registry for websites that SAIRA can close
     through Chrome DevTools Protocol.
     """
 
@@ -459,7 +459,7 @@ def close_process(
 
 def close_application(
     entry: CloseEntry,
-    log: SyraLogger,
+    log: SairaLogger,
 ) -> bool:
     """
     Try every configured process name.
@@ -503,7 +503,7 @@ CHROME_DEBUG_URL = (
 
 
 def get_chrome_tabs(
-    log: Optional[SyraLogger] = None,
+    log: Optional[SairaLogger] = None,
 ) -> list[dict]:
     """
     Return Chrome tabs exposed through CDP.
@@ -558,7 +558,7 @@ def get_chrome_tabs(
 
 def close_chrome_tab(
     tab: dict,
-    log: Optional[SyraLogger] = None,
+    log: Optional[SairaLogger] = None,
 ) -> bool:
     """
     Close one Chrome tab using its
@@ -643,7 +643,7 @@ def url_matches_domains(
 def close_web_tab(
     target: str,
     registry: WebTabRegistry,
-    log: SyraLogger,
+    log: SairaLogger,
 ) -> Optional[str]:
     """
     Find and close a matching Chrome tab.
@@ -712,7 +712,7 @@ def close_web_tab(
 
 def launch_chrome_with_debug(
     argv: list[str],
-    log: SyraLogger,
+    log: SairaLogger,
 ) -> tuple[bool, str]:
     """
     Launch Chromium with Chrome DevTools Protocol enabled.
@@ -752,7 +752,7 @@ def launch_chrome_with_debug(
 
 def register(
     router: CommandRouter,
-    log: SyraLogger,
+    log: SairaLogger,
 ) -> None:
 
     registry = ApplicationRegistry(
@@ -772,7 +772,7 @@ def register(
     # Build the .desktop index in background.
     threading.Thread(
         target=index.load,
-        name="syra-app-index",
+        name="saira-app-index",
         daemon=True,
     ).start()
 

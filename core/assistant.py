@@ -23,7 +23,7 @@ from core.command_router import Action, CommandContext, CommandRouter
 from core.state import State, StateMachine
 from core.wake_word import match_wake_phrase
 from ui.console_server import ConsoleServer
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 
 @dataclass(frozen=True)
@@ -33,7 +33,7 @@ class UserInput:
 
 
 class Assistant:
-    def __init__(self, log: SyraLogger, *, mic: Optional[MicrophoneManager] = None,
+    def __init__(self, log: SairaLogger, *, mic: Optional[MicrophoneManager] = None,
                  speaker: Optional[Speaker] = None, console: Optional[ConsoleServer] = None) -> None:
         self.log = log
         self.state = StateMachine(log)
@@ -67,7 +67,7 @@ class Assistant:
         """The user closed the popup terminal: cut speech and go back to sleep."""
         if self.state.is_(State.IDLE):
             return
-        self.log.syra("Terminal closed.")
+        self.log.saira("Terminal closed.")
         self._sleep_requested.set()
         self.speaker.stop()
 
@@ -76,18 +76,18 @@ class Assistant:
         """Print and queue speech. Does not block."""
         if not text:
             return
-        self.log.syra(text)
+        self.log.saira(text)
         self.speaker.say(text)
 
     def _finish_speech(self, resume: State) -> None:
-        """Wait (without listening) until SYRA finished talking, then return to `resume`."""
+        """Wait (without listening) until SAIRA finished talking, then return to `resume`."""
         if self.speaker.is_speaking:
             self.state.transition(State.SPEAKING)
             if not self.speaker.wait(cfg.SPEECH_MAX_WAIT_SECONDS):
                 self.log.warn("Speech took too long; stopping it.")
                 self.speaker.stop()
             time.sleep(cfg.POST_SPEECH_DELAY)
-            self.mic.flush()          # drop SYRA's own voice from the input buffer
+            self.mic.flush()          # drop SAIRA's own voice from the input buffer
         self.state.transition(resume)
 
     # ═══════════════════════════════ life cycle ══════════════════════════════════
@@ -100,9 +100,9 @@ class Assistant:
             self.shutdown()
 
     def _startup(self) -> None:
-        self.log.syra("Initializing...")
+        self.log.saira("Initializing...")
         info = detect_audio_system()
-        self.log.syra(f"Audio system detected: {info.server}")
+        self.log.saira(f"Audio system detected: {info.server}")
         if info.default_source:
             self.log.debug(f"System default microphone: {info.default_source}")
         self.speaker.start()
@@ -112,7 +112,7 @@ class Assistant:
         if cfg.GREET_ON_START and not self._stop.is_set():
             self.say(cfg.GREETING)
             self._finish_speech(State.IDLE)
-        self.log.syra("Waiting for wake word...")
+        self.log.saira("Waiting for wake word...")
 
     def _initialize_microphone(self) -> None:
         """Open and calibrate the mic; on failure keep retrying instead of crashing."""
@@ -134,7 +134,7 @@ class Assistant:
                 self._stop.wait(cfg.MIC_RECOVERY_INTERVAL)
 
     def shutdown(self) -> None:
-        self.log.syra("Shutting down.")
+        self.log.saira("Shutting down.")
         self.speaker.shutdown()
         self.console.stop()
         self.mic.close()
@@ -153,7 +153,7 @@ class Assistant:
             self.state.transition(State.ERROR)
             self._initialize_microphone()
         except Exception:  # noqa: BLE001 - supervisor barrier: log the traceback, keep running
-            self.log.error("Unexpected error (traceback saved to logs/syra.log).", exc_info=True)
+            self.log.error("Unexpected error (traceback saved to logs/saira.log).", exc_info=True)
             self._go_idle()
             self._stop.wait(1.0)
 
@@ -176,14 +176,14 @@ class Assistant:
         self.console.begin_session()
         self._clear_inputs()
         self._sleep_requested.clear()
-        self.log.syra("Wake word detected.")
+        self.log.saira("Wake word detected.")
         self.state.transition(State.ACTIVE)
         self.console.open_window()
         self.say(cfg.WAKE_REPLY)
         self._finish_speech(State.ACTIVE)
         self.mic.calibrate(cfg.CALIBRATION_SECONDS_ACTIVE)      # once per activation
         self._reset_counters()
-        self.log.syra("Listening...")
+        self.log.saira("Listening...")
         if remainder:
             self._inputs.put(UserInput(remainder, "voice"))
 
@@ -197,7 +197,7 @@ class Assistant:
             self._handle_input(inp)
         elif (cfg.ACTIVE_TIMEOUT_SECONDS
               and time.monotonic() - self._last_activity > cfg.ACTIVE_TIMEOUT_SECONDS):
-            self.log.syra("No activity - going back to sleep.")
+            self.log.saira("No activity - going back to sleep.")
             self._go_idle()
 
     def _poll_input(self, slice_seconds: float) -> Optional[UserInput]:
@@ -220,12 +220,12 @@ class Assistant:
         if result.status is ListenStatus.NO_SPEECH:
             self._silence_seconds += slice_seconds
             if self._silence_seconds >= cfg.NO_SPEECH_LOG_SECONDS:
-                self.log.syra("No voice detected.")
+                self.log.saira("No voice detected.")
                 self._silence_seconds = 0.0
         elif result.status is ListenStatus.UNCLEAR:
             self._silence_seconds = 0.0
             self._unclear_streak += 1
-            self.log.syra("Could not understand.")
+            self.log.saira("Could not understand.")
             if cfg.UNCLEAR_HINT_AFTER and self._unclear_streak >= cfg.UNCLEAR_HINT_AFTER:
                 self._unclear_streak = 0
                 self.say("I'm having trouble understanding. You can also type your command.")
@@ -252,7 +252,7 @@ class Assistant:
         """Ask a question and return the answer (spoken or typed), or None on timeout/sleep."""
         self.say(prompt)
         self._finish_speech(State.ACTIVE)
-        self.log.syra("Listening...")
+        self.log.saira("Listening...")
         deadline = time.monotonic() + timeout
         answer: Optional[str] = None
         while (time.monotonic() < deadline and not self._stop.is_set()
@@ -272,7 +272,7 @@ class Assistant:
         self.console.close_window()
         self.state.transition(State.IDLE)
         self.mic.flush()
-        self.log.syra("Waiting for wake word...")
+        self.log.saira("Waiting for wake word...")
 
     def _clear_inputs(self) -> None:
         while True:
@@ -289,7 +289,7 @@ class Assistant:
     def _note_service_error(self, speak: bool) -> None:
         now = time.monotonic()
         if now - self._last_service_log > 30 or not self._service_down:
-            self.log.syra("Recognition service unavailable.")
+            self.log.saira("Recognition service unavailable.")
             self._last_service_log = now
         if speak and not self._service_down:
             self.say("The speech recognition service is unavailable. You can type commands instead.")
@@ -299,4 +299,4 @@ class Assistant:
     def _service_recovered(self) -> None:
         if self._service_down:
             self._service_down = False
-            self.log.syra("Recognition service is back.")
+            self.log.saira("Recognition service is back.")

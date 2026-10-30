@@ -29,7 +29,7 @@ from typing import Iterable, Optional
 import requests
 
 import config as cfg
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 try:
     from gtts import gTTS
@@ -64,7 +64,7 @@ def split_for_speech(text: str) -> list[str]:
 class Speaker:
     """Non-blocking text-to-speech with a clean shutdown and no overlapping audio."""
 
-    def __init__(self, log: SyraLogger) -> None:
+    def __init__(self, log: SairaLogger) -> None:
         self.log = log
         self.available = False
         self._mpg123: Optional[str] = None
@@ -94,7 +94,7 @@ class Speaker:
             self.log.error("mpg123 is not installed - speech disabled. Run: sudo apt install mpg123")
             return
         try:
-            self._tmpdir = tempfile.TemporaryDirectory(prefix="syra_tts_")
+            self._tmpdir = tempfile.TemporaryDirectory(prefix="saira_tts_")
             if cfg.TTS_CACHE_ENABLED:
                 self._cache_dir.mkdir(parents=True, exist_ok=True)
                 self._prune_cache()
@@ -105,7 +105,7 @@ class Speaker:
             return
         self._output_args = self._detect_output_args()
         atexit.register(self.shutdown)
-        for target, name in ((self._synth_loop, "syra-tts-synth"), (self._play_loop, "syra-tts-play")):
+        for target, name in ((self._synth_loop, "saira-tts-synth"), (self._play_loop, "saira-tts-play")):
             thread = threading.Thread(target=target, name=name, daemon=True)
             thread.start()
             self._threads.append(thread)
@@ -182,7 +182,7 @@ class Speaker:
                         self.log.debug(f"Prewarm failed for {chunk!r}: {exc}")
                         return
 
-        threading.Thread(target=work, name="syra-tts-prewarm", daemon=True).start()
+        threading.Thread(target=work, name="saira-tts-prewarm", daemon=True).start()
 
     # ── internals ────────────────────────────────────────────────
     @staticmethod

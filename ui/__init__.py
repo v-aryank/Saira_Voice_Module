@@ -1,1 +1,1 @@
-"""SYRA popup terminal (server and client)."""
+"""SAIRA popup terminal (server and client)."""

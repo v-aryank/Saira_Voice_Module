@@ -1,4 +1,4 @@
-"""Wake-phrase detection on top of recognized text ("wake up Syra").
+"""Wake-phrase detection on top of recognized text ("wake up Saira").
 
 Google's recognizer often mis-hears an unusual name ("Sarah", "Sira", "Sid"...)
 or drops it entirely ("wake up"). Matching rules, in order:
@@ -9,7 +9,7 @@ or drops it entirely ("wake up"). Matching rules, in order:
   3. anything else, incl. "wake" alone  -> ignored   (protects against accidental wake-ups)
 
 The phrase must start the utterance (at most one stray word before it), and anything
-said after the name is returned as `remainder` ("wake up syra open chrome").
+said after the name is returned as `remainder` ("wake up saira open chrome").
 """
 from __future__ import annotations
 
@@ -20,12 +20,12 @@ from typing import Optional
 import config as cfg
 from utils.helpers import normalize
 
-# Words the recognizer commonly returns when the user says "Syra" (they are only ever
-# matched against; SYRA never says or prints them). WAKE_NAME_ALIASES in config.py is
+# Words the recognizer commonly returns when the user says "Saira" (they are only ever
+# matched against; SAIRA never says or prints them). WAKE_NAME_ALIASES in config.py is
 # checked too, so either list can be extended.
 _ASR_NAME_VARIANTS = frozenset({
     "sira", "sid", "sidd", "syd", "cid", "sir", "sera", "seira", "syria", "siria",
-    "cyra", "cira", "zira", "zyra", "seera", "syrah", "sarah", "sara", "sierra",
+    "cyra", "cira", "zira", "zyra", "seera", "sairah", "sarah", "sara", "sierra",
     "siri", "ciara", "zaira",
 })
 
@@ -52,7 +52,7 @@ def _evaluate(words: list[str]) -> tuple[Optional[WakeMatch], str]:
     for prefix in cfg.WAKE_PREFIXES:
         prefix_words = prefix.split()
         n = len(prefix_words)
-        # The phrase may be preceded by at most one stray word ("hey wake up syra").
+        # The phrase may be preceded by at most one stray word ("hey wake up saira").
         for start in (0, 1):
             if words[start:start + n] != prefix_words:
                 continue

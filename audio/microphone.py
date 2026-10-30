@@ -1,4 +1,4 @@
-"""Microphone management for SYRA.
+"""Microphone management for SAIRA.
 
 Design goals (each one addresses a problem of the old implementation):
 
@@ -25,7 +25,7 @@ import speech_recognition as sr
 
 import config as cfg
 from audio.audio_env import suppress_c_stderr
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 try:
     import pyaudio
@@ -155,7 +155,7 @@ def _is_auto(setting: object) -> bool:
 class MicrophoneManager:
     """Owns the recognizer and the microphone stream for the whole session."""
 
-    def __init__(self, log: SyraLogger) -> None:
+    def __init__(self, log: SairaLogger) -> None:
         self.log = log
         self.recognizer = self._build_recognizer()
         self.device: Optional[InputDevice] = None
@@ -207,8 +207,8 @@ class MicrophoneManager:
         """Select a working device, open the persistent stream. Raises MicrophoneError on failure."""
         device, rate = self._select_device()
         self._open(device, rate)
-        self.log.syra(f"Microphone: {device.name} (index {device.index}, {rate} Hz)")
-        self.log.syra("Microphone ready.")
+        self.log.saira(f"Microphone: {device.name} (index {device.index}, {rate} Hz)")
+        self.log.saira("Microphone ready.")
 
     # ── device selection ─────────────────────────────────────────
     def ordered_devices(self) -> list[InputDevice]:
@@ -305,14 +305,14 @@ class MicrophoneManager:
         if self.device is not None:
             try:
                 self._open(self.device, self._rate)
-                self.log.syra("Microphone recovered.")
+                self.log.saira("Microphone recovered.")
                 return
             except MicrophoneError as exc:
                 self.log.warn(f"Reopening failed: {exc}. Re-detecting devices...")
         self._reset_pyaudio()
         device, rate = self._select_device()
         self._open(device, rate)
-        self.log.syra(f"Microphone: {device.label}")
+        self.log.saira(f"Microphone: {device.label}")
 
     def _ensure_open(self) -> PersistentSource:
         if not self.is_open:
@@ -351,7 +351,7 @@ class MicrophoneManager:
         r.energy_threshold = min(max(r.energy_threshold, cfg.ENERGY_THRESHOLD_MIN), cfg.ENERGY_THRESHOLD_MAX)
 
     def flush(self) -> None:
-        """Discard audio buffered while we were not listening (e.g. SYRA's own voice)."""
+        """Discard audio buffered while we were not listening (e.g. SAIRA's own voice)."""
         if not self.is_open:
             return
         stream = self._source.stream  # type: ignore[union-attr]

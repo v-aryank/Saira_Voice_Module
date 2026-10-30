@@ -51,7 +51,7 @@ from utils.helpers import (
     slugify,
 )
 
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 
 # ============================================================
@@ -87,8 +87,9 @@ from utils.logger import SyraLogger
 WEBPAGE_PATTERN = (
     r"^(?:(?:make|create|build)\s+)?"
     r"(?:a\s+)?"
-    r"(?:web|website|site|landing)"
-    r"(?:\s+page)?$"
+    r"(?:webpage|web|website|site|landing)"
+    r"(?:\s+page)?"
+    r"(?:\s+architecture)?$"
 )
 
 
@@ -208,6 +209,7 @@ def copy_template(source: Path, destination: Path) -> bool:
         _PLACEHOLDER_GLOB,
         "__pycache__",
         ".git",
+        ".gitkeep",
         "node_modules",
     )
 
@@ -288,7 +290,7 @@ def _get_project_name(
 
 def create_webpage_architecture(
     ctx: CommandContext,
-    log: SyraLogger,
+    log: SairaLogger,
 ) -> Reply:
     """
     Create a new webpage project from the user's
@@ -379,7 +381,7 @@ def create_webpage_architecture(
     # Log
     # --------------------------------------------------------
 
-    log.syra(
+    log.saira(
         f"Webpage project folder: {target}"
     )
 
@@ -422,7 +424,7 @@ def create_webpage_architecture(
 
 def create_new_project(
     ctx: CommandContext,
-    log: SyraLogger,
+    log: SairaLogger,
 ) -> Reply:
     """
     Create a new project from the user's
@@ -523,7 +525,7 @@ def create_new_project(
     # Log
     # --------------------------------------------------------
 
-    log.syra(
+    log.saira(
         f"New project folder: {target}"
     )
 
@@ -567,7 +569,7 @@ def create_new_project(
 
 def open_project(
     ctx: CommandContext,
-    log: SyraLogger,
+    log: SairaLogger,
     project_name: str,
 ) -> Reply:
 
@@ -586,7 +588,7 @@ def open_project(
             f"{project_name}."
         )
 
-    log.syra(
+    log.saira(
         f"Opening project: {project}"
     )
 
@@ -617,7 +619,7 @@ def open_project(
 
 def register(
     router: CommandRouter,
-    log: SyraLogger,
+    log: SairaLogger,
 ) -> None:
 
     # --------------------------------------------------------

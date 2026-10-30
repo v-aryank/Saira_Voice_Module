@@ -5,7 +5,7 @@ utterance) plus a handler function:
 
     def handler(match: re.Match[str], ctx: CommandContext) -> str | CommandResult | None
 
-Return a string to have SYRA say it, a CommandResult for extra control
+Return a string to have Saira say it, a CommandResult for extra control
 (sleep / shutdown), or None if the handler already spoke via ctx.say().
 Routes are tried in registration order; the first match wins.
 """
@@ -17,13 +17,13 @@ from dataclasses import dataclass
 from typing import Callable, Optional, Sequence, Union
 
 from utils.helpers import strip_command_fillers
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 
 class Action(enum.Enum):
     NONE = "none"
     SLEEP = "sleep"        # return to IDLE after speaking
-    SHUTDOWN = "shutdown"  # exit SYRA after speaking
+    SHUTDOWN = "shutdown"  # exit SAIRA after speaking
 
 
 @dataclass
@@ -34,7 +34,7 @@ class CommandResult:
 
 
 class CommandError(Exception):
-    """A user-facing failure. The message is spoken as SYRA's reply."""
+    """A user-facing failure. The message is spoken as SAIRA's reply."""
 
 
 @dataclass
@@ -46,7 +46,7 @@ class CommandContext:
     """
     say: Callable[[str], None]
     ask: Callable[..., Optional[str]]
-    log: SyraLogger
+    log: SairaLogger
 
 
 Reply = Union[str, CommandResult, None]
@@ -65,7 +65,7 @@ class CommandRouter:
 
     UNKNOWN_REPLY = "Sorry, I don't know that."
 
-    def __init__(self, log: SyraLogger) -> None:
+    def __init__(self, log: SairaLogger) -> None:
         self._log = log
         self._routes: list[Route] = []
 
@@ -99,8 +99,8 @@ class CommandRouter:
             reply = route.handler(match, ctx)
         except CommandError as exc:
             return CommandResult(reply=str(exc))
-        except Exception:  # noqa: BLE001 - last-resort barrier: one buggy command must not kill SYRA
-            self._log.error(f"Command '{route.name}' crashed (details in logs/syra.log).", exc_info=True)
+        except Exception:  # noqa: BLE001 - last-resort barrier: one buggy command must not kill SAIRA
+            self._log.error(f"Command '{route.name}' crashed (details in logs/saira.log).", exc_info=True)
             return CommandResult(reply="Sorry, something went wrong while doing that.")
         if reply is None:
             return CommandResult()

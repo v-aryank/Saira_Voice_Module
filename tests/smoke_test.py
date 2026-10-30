@@ -9,6 +9,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -23,11 +24,11 @@ from core.state import State, StateMachine
 from core.wake_word import match_wake_phrase
 from audio.speaker import split_for_speech
 from utils.helpers import normalize, slugify, strip_command_fillers
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 
 def make_router(): 
-    log = SyraLogger()
+    log = SairaLogger()
     spoken: list[str] = []
     router = CommandRouter(log)
     register_all(router, log)
@@ -40,7 +41,7 @@ class TextTests(unittest.TestCase):
         self.assertEqual(normalize("What's today's date?"), "whats todays date")
 
     def test_fillers(self):
-        self.assertEqual(strip_command_fillers("Syra, could you open Chrome please"), "open chrome")
+        self.assertEqual(strip_command_fillers("Saira, could you open Chrome please"), "open chrome")
 
     def test_slug(self):
         self.assertEqual(slugify("My Portfolio Site!"), "my-portfolio-site")
@@ -51,17 +52,17 @@ class TextTests(unittest.TestCase):
 
 class WakeWordTests(unittest.TestCase):
     def test_matches(self):
-        for phrase in ("Wake up Syra", "wake up sarah", "Wake up, Sierra!", "wakeup syra", "hey wake up syra",
-                       "Wake up Sira", "Wake Up Sid", "WAKE UP!!", "  wake   up   syra  ", "wake-up syra",
+        for phrase in ("Wake up Saira", "wake up saira", "wake up sarah", "Wake up, Sierra!", "wakeup saira", "hey wake up saira",
+                       "Wake up Sira", "Wake Up Sid", "WAKE UP!!", "  wake   up   saira  ", "wake-up saira",
                        "wake up", "Wake up.", "wake up syria"):
             self.assertIsNotNone(match_wake_phrase(phrase), phrase)
 
     def test_remainder(self):
-        self.assertEqual(match_wake_phrase("wake up syra open chrome").remainder, "open chrome")
+        self.assertEqual(match_wake_phrase("wake up saira open chrome").remainder, "open chrome")
         self.assertEqual(match_wake_phrase("wake up").remainder, "")
 
     def test_rejects(self):
-        for phrase in ("open chrome", "what time is it", "wake up at seven", "syra", "wake", "Wake!",
+        for phrase in ("open chrome", "what time is it", "wake up at seven", "saira", "wake", "Wake!",
                        "I said wake up the neighbours", "the alarm will wake up", "wake me up", ""):
             self.assertIsNone(match_wake_phrase(phrase), phrase)
 
@@ -83,12 +84,24 @@ class RoutingTests(unittest.TestCase):
         return self.router.dispatch(text, self.ctx)
 
     def test_sleep_variants(self):
-        for phrase in ("go to sleep", "Sleep Syra", "quiet", "quite", "quit", "Stop listening", "terminal closed"):
+        for phrase in ("go to sleep", "Sleep Saira", "quiet", "quite", "quit", "Stop listening", "terminal closed"):
             self.assertEqual(self.route(phrase).action, Action.SLEEP, phrase)
 
     def test_shutdown_requires_name(self):
-        self.assertEqual(self.route("exit syra").action, Action.SHUTDOWN)
+        self.assertEqual(self.route("exit saira").action, Action.SHUTDOWN)
         self.assertNotEqual(self.route("exit").action, Action.SHUTDOWN)
+
+    def test_system_action_start_errors_are_reported(self):
+        with patch("commands.system.subprocess.Popen", side_effect=OSError("not available")):
+            self.route("restart system")
+            self.assertEqual(
+                self.route("yes").reply,
+                "I couldn't restart the system.",
+            )
+            self.assertEqual(
+                self.route("suspend system").reply,
+                "I couldn't suspend the system.",
+            )
 
     def test_time_and_date(self):
         self.assertTrue(self.route("What time is it?").reply.startswith("It's"))
@@ -113,7 +126,7 @@ class RoutingTests(unittest.TestCase):
         self.assertEqual(self.route("Tell me about Alan Turing").reply, "Tesla was an inventor.")
 
     def test_who_are_you_is_not_wikipedia(self):
-        self.assertIn("SYRA", self.route("who are you").reply)
+        self.assertIn("Saira", self.route("who are you").reply)
 
     def test_unknown_command(self):
         self.assertFalse(self.route("frobnicate the widgets").handled)
@@ -155,13 +168,13 @@ class DiscoveryTests(unittest.TestCase):
 
 class MiscTests(unittest.TestCase):
     def test_state_machine(self):
-        sm = StateMachine(SyraLogger())
+        sm = StateMachine(SairaLogger())
         self.assertTrue(sm.transition(State.ACTIVE))
         self.assertTrue(sm.transition(State.PROCESSING))
         self.assertTrue(sm.transition(State.SPEAKING))
         self.assertTrue(sm.transition(State.ACTIVE))
         self.assertTrue(sm.transition(State.IDLE))
-        sm2 = StateMachine(SyraLogger())
+        sm2 = StateMachine(SairaLogger())
         self.assertFalse(sm2.transition(State.PROCESSING))       # IDLE -> PROCESSING is illegal
 
     def test_split_for_speech(self):
@@ -182,6 +195,8 @@ class MiscTests(unittest.TestCase):
             src.mkdir()
             (src / "_PLACEHOLDER.md").write_text("x")
             self.assertFalse(copy_template(src, dst))
+            (src / ".gitkeep").write_text("")
+            self.assertFalse(copy_template(src, Path(tmp) / "empty-template"))
             dst2 = Path(tmp) / "dst2"
             (src / "index.html").write_text("<html></html>")
             self.assertTrue(copy_template(src, dst2))

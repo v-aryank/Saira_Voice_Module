@@ -22,7 +22,7 @@ from typing import Mapping, Sequence
 import config as cfg
 from core.command_router import CommandContext, CommandError, CommandRouter
 from utils.helpers import normalize
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 RUN_PATTERN = r"(?:run|execute)\s+(?:the\s+)?(?:system\s+)?command\s+(?P<name>.+)"
 
@@ -59,7 +59,7 @@ class RestrictedShell:
         return ShellResult(proc.returncode == 0, text or "The command produced no output.")
 
 
-def register(router: CommandRouter, log: SyraLogger) -> None:
+def register(router: CommandRouter, log: SairaLogger) -> None:
     shell = RestrictedShell(cfg.SHELL_ALLOWED_COMMANDS, cfg.SHELL_TIMEOUT_SECONDS, cfg.SHELL_MAX_OUTPUT_CHARS)
 
     def handler(match: re.Match, ctx: CommandContext) -> str:

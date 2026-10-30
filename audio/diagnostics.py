@@ -4,7 +4,7 @@
   1. RAW LEVELS   - records ambient noise and your voice straight from the stream (no
                     speech detection, no Google) and reports level, peak and clipping.
   2. RECOGNITION  - the real listen -> Google path, 3 attempts, saving what was sent.
-Every recording is written to /tmp so you can play it back and hear exactly what SYRA hears.
+Every recording is written to /tmp so you can play it back and hear exactly what Saira hears.
 """
 from __future__ import annotations
 
@@ -18,14 +18,14 @@ from pathlib import Path
 import config as cfg
 from audio.audio_env import detect_audio_system
 from audio.microphone import ListenStatus, MicrophoneError, MicrophoneManager, rank_device
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 OUT_DIR = Path("/tmp")
 
 
 @dataclass(frozen=True)
 class Levels:
-    rms: float        # total level (what SYRA's speech detector sees, DC included)
+    rms: float        # total level (what Saira's speech detector sees, DC included)
     ac_rms: float     # level after removing any constant offset (the actual audio)
     dc: float         # constant offset; should be near 0
     peak: int
@@ -64,7 +64,7 @@ def verdict(ambient: Levels, speech: Levels) -> list[str]:
     if speech.peak < 50:
         return ["Signal is essentially silent: the source is muted, or it is the wrong input."]
     if abs(ambient.dc) > 300 or abs(speech.dc) > 300:
-        notes.append(f"DC OFFSET: the signal is shifted by about {ambient.dc:.0f}. SYRA's speech detector "
+        notes.append(f"DC OFFSET: the signal is shifted by about {ambient.dc:.0f}. Saira's speech detector "
                      "sees that as constant loud noise. Try another source (--mic pipewire / default) "
                      "or another input port in GNOME Settings > Sound.")
     if speech.clipped > 0.005:
@@ -82,11 +82,11 @@ def verdict(ambient: Levels, speech: Levels) -> list[str]:
     return notes
 
 
-def list_microphones(log: SyraLogger) -> int:
+def list_microphones(log: SairaLogger) -> int:
     info = detect_audio_system()
-    log.syra(f"Audio system: {info.server}")
+    log.saira(f"Audio system: {info.server}")
     if info.default_source:
-        log.syra(f"System default source (GNOME Settings > Sound): {info.default_source}")
+        log.saira(f"System default source (GNOME Settings > Sound): {info.default_source}")
     mic = MicrophoneManager(log)
     try:
         devices = mic.ordered_devices()
@@ -107,55 +107,55 @@ def list_microphones(log: SyraLogger) -> int:
     return 0
 
 
-def _raw_stage(mic: MicrophoneManager, log: SyraLogger) -> None:
+def _raw_stage(mic: MicrophoneManager, log: SairaLogger) -> None:
     rate = mic.sample_rate
-    log.syra("STAGE 1/2 - raw levels. Stay completely quiet for 2 seconds...")
+    log.saira("STAGE 1/2 - raw levels. Stay completely quiet for 2 seconds...")
     ambient = mic.record_raw(2.0)
-    log.syra("Now speak normally for 4 seconds, e.g. 'open Chrome and tell me the time'...")
+    log.saira("Now speak normally for 4 seconds, e.g. 'open Chrome and tell me the time'...")
     speech = mic.record_raw(4.0)
 
     a = level_stats(ambient)
     v = level_stats(speech)
-    save_wav(OUT_DIR / "syra_mic_ambient.wav", ambient, rate)
-    save_wav(OUT_DIR / "syra_mic_speech.wav", speech, rate)
+    save_wav(OUT_DIR / "saira_mic_ambient.wav", ambient, rate)
+    save_wav(OUT_DIR / "saira_mic_speech.wav", speech, rate)
 
     print(f"\n  Ambient : level {a.ac_rms:7.0f}   DC offset {a.dc:7.0f}   peak {a.peak:6d}   (total RMS {a.rms:.0f})")
     print(f"  Speech  : level {v.ac_rms:7.0f}   DC offset {v.dc:7.0f}   peak {v.peak:6d}   clipped {v.clipped:.2%}")
     for note in verdict(a, v):
         print(f"  -> {note}")
-    print(f"  Recordings: {OUT_DIR}/syra_mic_ambient.wav , {OUT_DIR}/syra_mic_speech.wav\n")
+    print(f"  Recordings: {OUT_DIR}/saira_mic_ambient.wav , {OUT_DIR}/saira_mic_speech.wav\n")
 
 
-def test_microphone(log: SyraLogger) -> int:
+def test_microphone(log: SairaLogger) -> int:
     mic = MicrophoneManager(log)
     try:
         mic.initialize()
         _raw_stage(mic, log)
 
-        log.syra("STAGE 2/2 - recognition. Calibrating ambient noise, stay quiet for a second...")
+        log.saira("STAGE 2/2 - recognition. Calibrating ambient noise, stay quiet for a second...")
         before = mic.recognizer.energy_threshold
         mic.calibrate(cfg.CALIBRATION_SECONDS_STARTUP)
-        log.syra(f"Energy threshold: {before:.0f} -> {mic.recognizer.energy_threshold:.0f}")
+        log.saira(f"Energy threshold: {before:.0f} -> {mic.recognizer.energy_threshold:.0f}")
 
         outcomes = {status: 0 for status in ListenStatus}
         for attempt in range(1, 4):
-            log.syra(f"Test {attempt}/3 - say something now...")
+            log.saira(f"Test {attempt}/3 - say something now...")
             result = mic.listen(timeout=6, phrase_time_limit=6)
             outcomes[result.status] += 1
             if result.status is ListenStatus.OK:
-                log.syra(f"Heard: {result.text}")
+                log.saira(f"Heard: {result.text}")
             elif result.status is ListenStatus.NO_SPEECH:
-                log.syra("No voice detected.")
+                log.saira("No voice detected.")
             elif result.status is ListenStatus.UNCLEAR:
-                log.syra("Could not understand.")
+                log.saira("Could not understand.")
             else:
-                log.syra("Recognition service unavailable.")
+                log.saira("Recognition service unavailable.")
             audio = mic.last_audio
             if audio is not None and result.status is not ListenStatus.NO_SPEECH:
                 raw = audio.get_raw_data()
                 lv = level_stats(raw)
                 seconds = len(raw) / 2 / audio.sample_rate
-                path = OUT_DIR / f"syra_mic_recognition_{attempt}.wav"
+                path = OUT_DIR / f"saira_mic_recognition_{attempt}.wav"
                 save_wav(path, raw, audio.sample_rate)
                 print(f"    sent to recognizer: {seconds:.1f}s, level {lv.ac_rms:.0f}, DC {lv.dc:.0f}, "
                       f"peak {lv.peak}, clipped {lv.clipped:.2%}  ->  {path}")
@@ -164,7 +164,7 @@ def test_microphone(log: SyraLogger) -> int:
         print(f"\nSummary: {outcomes[ListenStatus.OK]}/3 recognized, "
               f"{outcomes[ListenStatus.NO_SPEECH]} silent, {outcomes[ListenStatus.UNCLEAR]} unclear, "
               f"{outcomes[ListenStatus.SERVICE_ERROR]} service errors.")
-        print(f"Play any recording to hear what SYRA hears:  aplay {OUT_DIR}/syra_mic_speech.wav")
+        print(f"Play any recording to hear what Saira hears:  aplay {OUT_DIR}/saira_mic_speech.wav")
         return 0 if outcomes[ListenStatus.OK] else 2
     except MicrophoneError as exc:
         log.error(f"Microphone test failed: {exc}")

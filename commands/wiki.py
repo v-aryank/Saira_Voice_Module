@@ -16,7 +16,7 @@ import requests
 
 import config as cfg
 from core.command_router import CommandContext, CommandError, CommandRouter
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 warnings.filterwarnings("ignore", message=".*No parser was explicitly specified.*")
 
@@ -32,7 +32,7 @@ QUERY_PATTERN = (
     r"(?!(?:you|your|my|me|this|that|it|the time|the date|todays)\b)(?P<query>.+)"
 )
 
-_POOL = ThreadPoolExecutor(max_workers=2, thread_name_prefix="syra-wiki")
+_POOL = ThreadPoolExecutor(max_workers=2, thread_name_prefix="saira-wiki")
 _PARENTHESES = re.compile(r"\([^()]*\)")
 _CITATIONS = re.compile(r"\[\d+\]")
 
@@ -83,7 +83,7 @@ def _fetch(query: str, sentences: int) -> WikiAnswer:
     raise NotFound(query)
 
 
-def register(router: CommandRouter, log: SyraLogger) -> None:
+def register(router: CommandRouter, log: SairaLogger) -> None:
     if wikipedia is None:
         log.warn("The 'wikipedia' package is missing - lookups disabled. Run: pip install wikipedia")
 

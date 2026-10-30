@@ -1,5 +1,5 @@
 """
-SYRA v2.0 - central configuration.
+Saira Voice Control Engine - central configuration.
 
 Everything you are likely to tweak lives in this one file.
 Other modules read it with:  import config as cfg
@@ -13,18 +13,18 @@ BASE_DIR = Path(__file__).resolve().parent
 HOME = Path.home()
 
 # ─────────────────────────── Identity ────────────────────────────
-ASSISTANT_NAME = "SYRA"
+ASSISTANT_NAME = "Saira"
 GREETING = "Hello Sir."
 WAKE_REPLY = "Yes Sir."
 GREET_ON_START = True
 
 # ─────────────────────────── Wake word ───────────────────────────
-# "<prefix> <name>" wakes SYRA. Speech recognizers often mis-spell an unusual
+# "<prefix> <name>" wakes Saira. Speech recognizers often mis-spell an unusual
 # name, so a word also counts as the name if it is in WAKE_NAME_ALIASES or is
 # spelled similarly enough to WAKE_NAME (difflib ratio >= WAKE_FUZZY_CUTOFF).
 WAKE_PREFIXES = ("wake up",)
-WAKE_NAME = "syra"
-WAKE_NAME_ALIASES = ("cyra", "sara", "saira", "syra",
+WAKE_NAME = "saira"
+WAKE_NAME_ALIASES = ("cyra", "sara",
                      "seera", "sayra", "cira", "ciara", "zyra")
 WAKE_FUZZY_CUTOFF = 0.6
 
@@ -33,11 +33,11 @@ WAKE_FUZZY_CUTOFF = 0.6
 # 7              -> use PortAudio device index 7 (see:  python main.py --list-mics)
 # "pulse"        -> use the first input device whose name contains "pulse"
 # Indexes can change between boots, so a name or "auto" is more robust.
-# Override without editing this file:  python main.py --mic 7   or   SYRA_MIC=pulse
+# Override without editing this file:  python main.py --mic 7   or   SAIRA_MIC=pulse
 MIC_DEVICE_INDEX: int | str | None = None
 
 # Auto-detect order (exact device names, case-insensitive). All three go through
-# PipeWire's PulseAudio/ALSA compatibility layer, so GNOME sees SYRA as a normal
+# PipeWire's PulseAudio/ALSA compatibility layer, so GNOME sees Saira as a normal
 # audio client (and shows its microphone indicator). Direct "hw:" devices come last.
 MIC_PREFERRED_NAMES = ("pulse", "pipewire", "default")
 
@@ -64,11 +64,11 @@ NON_SPEAKING_DURATION = 0.4         # silence kept around a phrase; must be <= P
 
 LISTEN_SLICE_ACTIVE = 1.0           # ACTIVE: listen in 1 s slices so typed commands stay responsive
 LISTEN_SLICE_IDLE = 3.0             # IDLE: nothing else to poll, so longer slices
-WAKE_PHRASE_TIME_LIMIT = 4.0        # "wake up syra" is short
+WAKE_PHRASE_TIME_LIMIT = 4.0        # "wake up saira" is short
 COMMAND_PHRASE_TIME_LIMIT = 10.0    # longest spoken command
 
 CALIBRATION_SECONDS_STARTUP = 1.0   # once at start (needed for wake-word detection)
-CALIBRATION_SECONDS_ACTIVE = 0.6    # once each time SYRA wakes up
+CALIBRATION_SECONDS_ACTIVE = 0.6    # once each time Saira wakes up
 POST_SPEECH_DELAY = 0.3             # let the room echo die before listening again
 SPEECH_MAX_WAIT_SECONDS = 60.0      # safety: never wait for TTS longer than this
 
@@ -83,23 +83,23 @@ TTS_LANG = "en"
 TTS_TLD = "com"                     # accent: "com" US, "co.uk" UK, "com.au", "co.in" ...
 TTS_SLOW = False
 TTS_CACHE_ENABLED = True            # cache SHORT phrases so "Yes Sir." is instant
-TTS_CACHE_DIR = HOME / ".cache" / "syra" / "tts"
+TTS_CACHE_DIR = HOME / ".cache" / "saira" / "tts"
 TTS_CACHE_MAX_FILES = 300
 TTS_CACHE_MAX_CHARS = 90            # only phrases up to this length are cached
 # If gTTS mispronounces a word, map it to a spelling it reads better, e.g.
-# {"SYRA": "Seera"}. Terminal text is never changed - only what is spoken.
+# {"SAIRA": "Sigh-ruh"}. Terminal text is never changed - only what is spoken.
 TTS_PRONUNCIATIONS: dict[str, str] = {}
 MPG123_OUTPUT = "auto"              # "auto" (prefers pulse/PipeWire), "pulse", "alsa", or None
 
 # ───────────────────────── Popup terminal ────────────────────────
 POPUP_ENABLED = True
-POPUP_TITLE = "SYRA"
+POPUP_TITLE = "Saira"
 POPUP_GEOMETRY = "100x30"
-CONSOLE_SOCKET = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp")) / "syra_console.sock"
+CONSOLE_SOCKET = Path(os.environ.get("XDG_RUNTIME_DIR", "/tmp")) / "saira_console.sock"
 
 # ─────────────────── Application registry (voice: "open X") ─────────
 # key      -> spoken canonical name (also an alias)
-# display  -> what SYRA says/prints
+# display  -> what Saira says/prints
 # commands -> executables tried in order; the first one found on PATH is used
 # aliases  -> other things you might say
 # Anything NOT listed here is still found through the .desktop-file discovery.
@@ -157,7 +157,7 @@ APPLICATIONS: dict[str, dict] = {
 #   "quit Firefox"
 #   "exit Chrome"
 #
-# SYRA only uses these fixed process names.
+# Saira only uses these fixed process names.
 # Spoken text is NEVER passed directly to a shell.
 
 CLOSE_TARGETS: dict[str, dict] = {
@@ -271,7 +271,7 @@ CLOSE_TARGETS: dict[str, dict] = {
 }
 
 # ───────────────────── Web shortcuts (voice: "open X") ───────────
-# Opened in the system default browser via a plain URL - SYRA does not start
+# Opened in the system default browser via a plain URL - SAIRA does not start
 # a browser process of its own.
 WEB_SITES: dict[str, dict] = {
     "youtube": {"display": "YouTube", "url": "https://www.youtube.com", "aliases": ["you tube"]},
@@ -291,12 +291,14 @@ WIKI_SENTENCES = 2                  # spoken summary length
 WIKI_TIMEOUT = 10.0                 # the wikipedia package has no timeout of its own
 
 # ───────────────────────── Development ───────────────────────────
-PROJECTS_DIR = HOME / "Documents" / "vscode" / "Project"
+PROJECTS_DIR = Path(
+    os.environ.get("SAIRA_PROJECTS_DIR", HOME / "Documents" / "vscode" / "Project")
+).expanduser()
 WEBPAGE_TEMPLATE_DIR = BASE_DIR / "templates" / "webpage_architecture"
 NEW_PROJECT_TEMPLATE_DIR = BASE_DIR / "templates" / "new_project"
 
 # ──────────────── Restricted command execution (OFF) ─────────────
-# SECURITY BOUNDARY: SYRA never runs free-form shell text. Even when enabled,
+# SECURITY BOUNDARY: Saira never runs free-form shell text. Even when enabled,
 # only the fixed argv lists below can run - spoken words select a NAME, they
 # are never passed to a shell. Keep disabled until you need it.
 SHELL_ENABLED = False
@@ -310,4 +312,4 @@ SHELL_MAX_OUTPUT_CHARS = 400
 
 # ─────────────────────────── Logging ─────────────────────────────
 DEBUG = False
-LOG_FILE = BASE_DIR / "logs" / "syra.log"
+LOG_FILE = BASE_DIR / "logs" / "saira.log"

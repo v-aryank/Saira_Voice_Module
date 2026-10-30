@@ -1,10 +1,10 @@
-"""SYRA's popup terminal: server side (runs inside the assistant process).
+"""SAIRA's popup terminal: server side (runs inside the assistant process).
 
 The popup is a separate terminal window running ui/console_client.py, connected
 to the assistant over a private Unix socket (mode 0600, in $XDG_RUNTIME_DIR).
-    assistant -> popup : every [SYRA]/[YOU]/[WARN] line, as JSON lines
+    assistant -> popup : every [SAIRA]/[YOU]/[WARN] line, as JSON lines
     popup -> assistant : commands the user types
-If the user closes the popup, the socket drops and SYRA is told, so it can go
+If the user closes the popup, the socket drops and SAIRA is told, so it can go
 back to IDLE ("terminal closed").
 """
 from __future__ import annotations
@@ -22,13 +22,13 @@ from typing import Callable, Optional
 
 import config as cfg
 from utils.helpers import launch_detached
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 _CLIENT_SCRIPT = Path(__file__).with_name("console_client.py")
 
 
 class ConsoleServer:
-    def __init__(self, log: SyraLogger, on_text: Callable[[str], None],
+    def __init__(self, log: SairaLogger, on_text: Callable[[str], None],
                  on_disconnect: Callable[[], None]) -> None:
         self._log = log
         self._on_text = on_text
@@ -60,7 +60,7 @@ class ConsoleServer:
             self._log.warn(f"Popup terminal unavailable: {exc}")
             return False
         self._server = server
-        threading.Thread(target=self._accept_loop, name="syra-console-accept", daemon=True).start()
+        threading.Thread(target=self._accept_loop, name="saira-console-accept", daemon=True).start()
         return True
 
     def stop(self) -> None:
@@ -111,7 +111,7 @@ class ConsoleServer:
         return False
 
     def close_window(self) -> None:
-        """Ask the popup to exit (used when SYRA goes to sleep)."""
+        """Ask the popup to exit (used when SAIRA goes to sleep)."""
         with self._lock:
             client = self._client
             if client is not None:
@@ -158,7 +158,7 @@ class ConsoleServer:
                     pass
             for message in list(self._backlog):
                 self._send(conn, message)
-            threading.Thread(target=self._read_loop, args=(conn,), name="syra-console-read",
+            threading.Thread(target=self._read_loop, args=(conn,), name="saira-console-read",
                              daemon=True).start()
 
     def _read_loop(self, conn: socket.socket) -> None:

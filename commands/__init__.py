@@ -8,10 +8,10 @@ from __future__ import annotations
 import config as cfg
 from commands import applications, development, shell, system, wiki
 from core.command_router import CommandRouter
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 
-def register_all(router: CommandRouter, log: SyraLogger) -> None:
+def register_all(router: CommandRouter, log: SairaLogger) -> None:
     system.register(router)                 # sleep, shutdown, time, date, identity
     if cfg.SHELL_ENABLED:                   # security boundary: only wired in when enabled
         shell.register(router, log)

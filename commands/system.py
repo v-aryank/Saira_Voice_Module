@@ -1,8 +1,8 @@
-"""System-level voice commands for SYRA.
+"""System-level voice commands for Saira.
 
 Handles:
-- SYRA sleep / idle mode
-- SYRA shutdown
+- Saira sleep / idle mode
+- Saira shutdown
 - System restart / reboot
 - System suspend
 - System shutdown / power off
@@ -12,7 +12,7 @@ Handles:
 - Thanks
 
 Important:
-    "sleep" by itself means SYRA goes to IDLE.
+    "sleep" by itself means Saira goes to IDLE.
     "suspend system" means Ubuntu system suspend.
     Restart and system shutdown require confirmation.
 """
@@ -24,6 +24,7 @@ import subprocess
 from datetime import datetime
 from typing import Optional
 
+import config as cfg
 from core.command_router import (
     Action,
     CommandContext,
@@ -37,10 +38,10 @@ from core.command_router import (
 # ============================================================================
 
 # ---------------------------------------------------------------------------
-# SYRA sleep
+# Saira sleep
 # ---------------------------------------------------------------------------
 # This does NOT suspend Ubuntu.
-# It simply returns SYRA to IDLE.
+# It simply returns Saira to IDLE.
 #
 # "quit" and "quite" are included intentionally because speech recognition
 # can sometimes produce these words when the user says "quiet".
@@ -49,31 +50,32 @@ from core.command_router import (
 SLEEP_PATTERN = (
     r"(?:"
     r"go to sleep|"
-    r"sleep(?: syra)?|"
+    r"sleep(?: (?:saira|saira))?|"
     r"be quiet|"
-    r"quiet(?: syra)?|"
+    r"quiet(?: (?:saira|saira))?|"
     r"quite|"
     r"quit|"
     r"go quiet|"
     r"stop listening|"
     r"stand by|"
     r"terminal closed|"
-    r"close (?:the |your )?(?:syra )?(?:console|popup|terminal)"
+    r"close (?:the |your )?(?:(?:saira|saira) )?(?:console|popup|terminal)"
     r")"
 )
 
 
 # ---------------------------------------------------------------------------
-# SYRA shutdown
+# Saira shutdown
 # ---------------------------------------------------------------------------
-# This shuts down SYRA itself, NOT Ubuntu.
+# This shuts down Saira itself, NOT Ubuntu.
 # ---------------------------------------------------------------------------
 
 SHUTDOWN_PATTERN = (
     r"(?:"
-    r"turn off(?: syra)?|"
+    r"turn off(?: (?:saira|saira))?|"
     r"turn off assistant|"
-    r"stop syra"
+    r"stop (?:saira|saira)|"
+    r"exit (?:saira|saira)"
     r")"
 )
 
@@ -96,7 +98,7 @@ RESTART_PATTERN = (
 # System suspend
 # ---------------------------------------------------------------------------
 # Do NOT include plain "sleep" here.
-# Plain "sleep" belongs to SYRA's own sleep/IDLE command.
+# Plain "sleep" belongs to Saira's own sleep/IDLE command.
 # ---------------------------------------------------------------------------
 
 SUSPEND_PATTERN = (
@@ -210,7 +212,7 @@ IDENTITY_PATTERN = (
 # Thanks
 # ---------------------------------------------------------------------------
 
-THANKS_PATTERN = r"(?:thanks|thank you)(?: syra)?"
+THANKS_PATTERN = r"(?:thanks|thank you)(?: (?:saira|saira))?"
 
 
 # ============================================================================
@@ -233,9 +235,9 @@ _pending_action: Optional[str] = None
 # ============================================================================
 
 def register(router: CommandRouter) -> None:
-    """Register all system-related commands with the SYRA router."""
+    """Register all system-related commands with the Saira router."""
 
-    # SYRA internal controls
+    # Saira internal controls
     router.register("shutdown", [SHUTDOWN_PATTERN], _shutdown)
     router.register("sleep", [SLEEP_PATTERN], _sleep)
 
@@ -279,14 +281,14 @@ def register(router: CommandRouter) -> None:
 
 
 # ============================================================================
-# SYRA internal controls
+# Saira internal controls
 # ============================================================================
 
 def _sleep(
     match: re.Match,
     ctx: CommandContext,
 ) -> CommandResult:
-    """Put SYRA into IDLE mode."""
+    """Put Saira into IDLE mode."""
 
     _clear_pending_action()
 
@@ -300,7 +302,7 @@ def _shutdown(
     match: re.Match,
     ctx: CommandContext,
 ) -> CommandResult:
-    """Shut down SYRA itself."""
+    """Shut down Saira itself."""
 
     _clear_pending_action()
 
@@ -329,7 +331,7 @@ def _restart_system(
     )
 
 
-def _execute_restart() -> CommandResult:
+def _execute_restart(ctx: CommandContext) -> CommandResult:
     """Execute the actual system restart."""
 
     global _pending_action
@@ -348,7 +350,8 @@ def _execute_restart() -> CommandResult:
             reply="Restarting now."
         )
 
-    except Exception:
+    except OSError as exc:
+        ctx.log.error(f"Could not request system restart: {exc}")
         return CommandResult(
             reply="I couldn't restart the system."
         )
@@ -378,7 +381,8 @@ def _suspend_system(
             reply="Suspending the system."
         )
 
-    except Exception:
+    except OSError as exc:
+        ctx.log.error(f"Could not request system suspend: {exc}")
         return CommandResult(
             reply="I couldn't suspend the system."
         )
@@ -403,7 +407,7 @@ def _shutdown_system(
     )
 
 
-def _execute_shutdown() -> CommandResult:
+def _execute_shutdown(ctx: CommandContext) -> CommandResult:
     """Execute the actual Ubuntu shutdown."""
 
     global _pending_action
@@ -422,7 +426,8 @@ def _execute_shutdown() -> CommandResult:
             reply="Shutting down the system."
         )
 
-    except Exception:
+    except OSError as exc:
+        ctx.log.error(f"Could not request system shutdown: {exc}")
         return CommandResult(
             reply="I couldn't shut down the system."
         )
@@ -446,10 +451,10 @@ def _confirm_yes(
         )
 
     if _pending_action == "restart":
-        return _execute_restart()
+        return _execute_restart(ctx)
 
     if _pending_action == "shutdown":
-        return _execute_shutdown()
+        return _execute_shutdown(ctx)
 
     _pending_action = None
 
@@ -536,9 +541,9 @@ def _identity(
     match: re.Match,
     ctx: CommandContext,
 ) -> str:
-    """Return SYRA's identity."""
+    """Return Saira's identity."""
 
-    return "I am SYRA, your desktop voice assistant."
+    return f"I am {cfg.ASSISTANT_NAME}, your desktop voice assistant."
 
 
 def _thanks(

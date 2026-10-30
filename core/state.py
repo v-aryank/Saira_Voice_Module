@@ -1,10 +1,10 @@
-"""SYRA's state machine.
+"""SAIRA's state machine.
 
     IDLE ──wake word──▶ ACTIVE ──speech/text──▶ PROCESSING ──▶ SPEAKING ──▶ ACTIVE
       ▲                                                                     │
       └──────────────────── "go to sleep" / console closed ─────────────────┘
 
-ERROR is entered when the microphone cannot be recovered; SYRA then retries
+ERROR is entered when the microphone cannot be recovered; SAIRA then retries
 until it works and drops back to IDLE. SPEAKING can interrupt any state and
 returns to the state that was active before.
 """
@@ -13,7 +13,7 @@ from __future__ import annotations
 import enum
 import threading
 
-from utils.logger import SyraLogger
+from utils.logger import SairaLogger
 
 
 class State(enum.Enum):
@@ -36,7 +36,7 @@ _ALLOWED: dict[State, frozenset[State]] = {
 class StateMachine:
     """Thread-safe holder of the current state with validated transitions."""
 
-    def __init__(self, log: SyraLogger, initial: State = State.IDLE) -> None:
+    def __init__(self, log: SairaLogger, initial: State = State.IDLE) -> None:
         self._log = log
         self._state = initial
         self._lock = threading.Lock()
