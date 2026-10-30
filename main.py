@@ -1,12 +1,10 @@
-#!/usr/bin/env python3
-"""Saira Voice Control Engine - private desktop voice-control prototype.
+# ============================================================
+# Project: Saira Voice Control Engine
+# Developer: Aryan Kabir
+# Copyright (c) 2026 Aryan Kabir
+# All Rights Reserved.
+# ============================================================
 
-    python main.py                 run the assistant
-    python main.py --list-mics     show input devices and the auto-selection order
-    python main.py --test-mic      test microphone + recognition end to end
-    python main.py --mic 7         use a specific microphone (index or name) for this run
-    python main.py --debug         show debug lines (state changes, ignored speech, thresholds)
-"""
 from __future__ import annotations
 
 import argparse
