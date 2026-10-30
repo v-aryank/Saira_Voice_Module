@@ -1,4 +1,4 @@
-Copyright (c) 2026 Aryan Kabir. All Rights Reserved.
+Copyright (c) 2026 V. Aryan Kabir. All Rights Reserved.
 
 Saira Voice Control Engine is a proprietary software project developed by Aryan Kabir.
 

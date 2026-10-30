@@ -1,6 +1,6 @@
 # ============================================================
 # Project: Saira Voice Control Engine
-# Developer: Aryan Kabir
+# Developer: V. Aryan Kabir
 # Copyright (c) 2026 Aryan Kabir
 # All Rights Reserved.
 # ============================================================
